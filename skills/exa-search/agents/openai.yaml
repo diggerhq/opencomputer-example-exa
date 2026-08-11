@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exa Search"
+  short_description: "Search and research the web with Exa"
+  default_prompt: "Use $exa-search to research a topic with current web sources."

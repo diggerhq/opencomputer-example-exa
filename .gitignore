@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.opencomputer/
+.env
+.env.local
