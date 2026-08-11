@@ -25,41 +25,11 @@ only into requests sent to `https://api.exa.ai`.
 
 ## Install
 
-### Dependency-layout note
-
-This checkout uses development builds of `@opencomputer/agent` and
-`@opencomputer/cli` through these relative paths:
-
-```text
-../../opencomputer/agent
-../../opencomputer/cli
-```
-
-For a standalone clone, place the repositories in this layout before running
-`npm install`:
-
-```text
-demo-workspace/
-├── opencomputer/
-└── projects/
-    └── secret-logs-test/
-```
-
-From `demo-workspace`, that can look like:
-
-```bash
-git clone https://github.com/diggerhq/opencomputer.git opencomputer
-mkdir -p projects
-git clone <repository-url> projects/secret-logs-test
-cd projects/secret-logs-test
-```
-
-If your copy already uses published npm versions instead of `file:` entries in
-`package.json`, no special directory layout is needed.
-
 Clone the repository, enter its directory, and install the dependencies:
 
 ```bash
+git clone https://github.com/diggerhq/opencomputer-example-exa.git
+cd opencomputer-example-exa
 npm install
 ```
 
