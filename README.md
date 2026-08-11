@@ -156,8 +156,8 @@ opencomputer/
     agent.ts                 Agent instructions and tool registration
     tools/exa.ts             Exa connection and exa_search tool
   project.ts                 OpenComputer project definition
-skills/exa-search/
-  SKILL.md                   Research workflow guidance
+opencomputer/agents/hello-world/skills/exa-search/
+  SKILL.md                   Agent-specific research workflow guidance
 src/
   App.tsx                    Exa demo interface
   use-agent.ts               Streaming OpenComputer client
