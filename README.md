@@ -87,8 +87,7 @@ registered without printing its value:
 ./node_modules/.bin/opencomputer secrets list --environment development
 ```
 
-Only `EXA_API_KEY` is required. The unused Hacker News example source file does
-not run and does not require a secret.
+Only `EXA_API_KEY` is required.
 
 ## Run locally
 
