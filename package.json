@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "opencomputer": "opencomputer",
     "dev": "opencomputer dev",
     "dev:web": "vite",
     "build": "tsc -b && vite build",

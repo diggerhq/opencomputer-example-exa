@@ -36,25 +36,22 @@ npm install
 Log in to OpenComputer:
 
 ```bash
-./node_modules/.bin/opencomputer login
+npm run opencomputer -- login
 ```
-
-You can also use `npx opencomputer login` if the local binary is not yet
-available.
 
 ## Configure the Exa API key
 
 Set the development secret from the project directory:
 
 ```bash
-./node_modules/.bin/opencomputer secrets set EXA_API_KEY
+npm run opencomputer -- secrets set EXA_API_KEY
 ```
 
 Paste the key when prompted. Input is hidden. Confirm that the secret name is
 registered without printing its value:
 
 ```bash
-./node_modules/.bin/opencomputer secrets list --environment development
+npm run opencomputer -- secrets list --environment development
 ```
 
 Only `EXA_API_KEY` is required.
@@ -107,7 +104,7 @@ npm run build
 Production uses a separate secret from development. Set it before deploying:
 
 ```bash
-./node_modules/.bin/opencomputer secrets set EXA_API_KEY \
+npm run opencomputer -- secrets set EXA_API_KEY \
   --environment production
 ```
 
@@ -143,8 +140,9 @@ src/
 | `npm run build` | Type-check and build the React application |
 | `npm run session` | Open an agent session from the terminal |
 | `npm run deploy` | Create a production deployment |
-| `opencomputer secrets set EXA_API_KEY` | Set the Exa secret |
-| `opencomputer secrets list` | List configured secret names and scopes |
+| `npm run opencomputer -- <command>` | Run the project-local OpenComputer CLI |
+| `npm run opencomputer -- secrets set EXA_API_KEY` | Set the Exa secret |
+| `npm run opencomputer -- secrets list` | List configured secret names and scopes |
 
 ## Troubleshooting
 
@@ -158,11 +156,11 @@ Set the key again in the environment you are using:
 
 ```bash
 # Local development
-./node_modules/.bin/opencomputer secrets set EXA_API_KEY \
+npm run opencomputer -- secrets set EXA_API_KEY \
   --environment development
 
 # Production deployment
-./node_modules/.bin/opencomputer secrets set EXA_API_KEY \
+npm run opencomputer -- secrets set EXA_API_KEY \
   --environment production
 ```
 
