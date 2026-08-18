@@ -1,17 +1,13 @@
-# Exa Research Demo
+# OpenComputer GTM Engineer
 
-A small, shareable web-research agent built with React, OpenComputer, and Exa.
-Ask a question in the browser and the agent searches the live web with Exa,
-reads relevant results, and returns a concise answer with source links.
+An agent-only GTM demo built with OpenComputer and Exa. It runs in the
+OpenComputer debug playground and through code-defined schedules; there is no
+separate frontend.
 
-## What the demo shows
-
-- Natural-language web research with Exa
-- Current results instead of model memory alone
-- Semantic search with optional date, domain, and category filtering
-- Relevant page highlights or full-text retrieval
-- Streaming answers with clickable source URLs
-- Follow-up questions in the same research session
+The agent covers social opportunity discovery, social-content ideation,
+blog-topic research, public-evidence outreach prospecting, and strategy review
+for one seeded campaign. It is intentionally read-only: no publishing,
+messaging, CRM, enrollment, or analytics-writing tools are connected.
 
 ## Prerequisites
 
@@ -19,170 +15,97 @@ reads relevant results, and returns a concise answer with source links.
 - An OpenComputer account
 - An Exa API key
 
-Never put the Exa key in `.env`, React source code, or a browser request. The
-key is stored by OpenComputer as a managed, write-only secret and is injected
-only into requests sent to `https://api.exa.ai`.
-
-## Install
-
-Clone the repository, enter its directory, and install the dependencies:
+## Install and configure
 
 ```bash
-git clone https://github.com/diggerhq/opencomputer-example-exa.git
-cd opencomputer-example-exa
 npm install
-```
-
-Log in to OpenComputer:
-
-```bash
 npm run opencomputer -- login
-```
-
-## Configure the Exa API key
-
-Set the development secret from the project directory:
-
-```bash
 npm run opencomputer -- secrets set EXA_API_KEY
 ```
 
-Paste the key when prompted. Input is hidden. Confirm that the secret name is
-registered without printing its value:
+The Exa key is stored as a managed, write-only OpenComputer secret and is only
+injected into requests sent to `https://api.exa.ai`.
 
-```bash
-npm run opencomputer -- secrets list --environment development
-```
-
-Only `EXA_API_KEY` is required.
-
-## Run locally
-
-The agent sync and React development server run separately.
-
-### Terminal 1: sync the agent
+## Test in the debug playground
 
 ```bash
 npm run dev
 ```
 
-The first run asks you to create an OpenComputer cloud project or select an
-existing one. Keep this process running while using the demo.
-
-### Terminal 2: start React
-
-```bash
-npm run dev:web
-```
-
-Open [http://localhost:5173](http://localhost:5173) in a browser.
-
-## Use the demo
-
-1. Enter a research question or select one of the example prompts.
-2. The OpenComputer agent receives the question and calls `exa_search`.
-3. Exa searches the live web and returns ranked sources with page content.
-4. The agent compares the evidence and streams an answer with source URLs.
-5. Ask follow-up questions to continue in the same session.
-
-Good questions to try:
+Open the debug playground printed by the CLI. Start a manual session with:
 
 ```text
-What are the latest developments in AI coding agents?
-Find recent companies hiring their first DevOps engineer.
-Compare the newest open-source browser automation tools.
+Run the social opportunity discovery tick for agent-harness-demo.
 ```
+
+Then test the drafting boundary with:
+
+```text
+approve 1, 3
+```
+
+Development shows all five deployed schedules. They are manual-only there, so
+use **Run now** to test their exact payloads without waiting for a cron tick.
+
+## Schedules
+
+The canonical definitions live beside the agent under `schedules/`:
+
+| Schedule | Cadence | Workflow |
+| --- | --- | --- |
+| `hourly-social` | Hourly | Social opportunity discovery |
+| `social-content` | Every 3 hours | Social-content research |
+| `weekly-blog` | Mondays at 09:00 | Blog-topic research |
+| `six-hour-outreach` | Every 6 hours at :30 | Outreach research |
+| `three-day-strategy` | At 10:00 on every third calendar day | Strategy review |
+
+All times use `America/Los_Angeles`, all schedules skip overlapping runs, and
+automatic recurrence is enabled only in Production. Each firing starts a fresh
+durable session with `source: "schedule"` and the committed structured payload.
+
+The strategy schedule intentionally supplies an empty metrics object. Until a
+metrics integration exists, the agent returns a missing-data checklist instead
+of inventing results.
 
 ## Build and deploy
 
-Verify the production React build:
-
 ```bash
 npm run build
-```
-
-Production uses a separate secret from development. Set it before deploying:
-
-```bash
-npm run opencomputer -- secrets set EXA_API_KEY \
-  --environment production
-```
-
-Deploy the agent and application:
-
-```bash
+npm run opencomputer -- secrets set EXA_API_KEY --environment production
 npm run deploy
 ```
+
+The deployment syncs the agent and all schedule definitions. Production begins
+recurring runs immediately according to each next cron occurrence.
 
 ## Project structure
 
 ```text
 opencomputer/
-  agents/hello-world/
-    agent.ts                 Agent instructions and tool registration
-    tools/exa.ts             Exa connection and exa_search tool
-  project.ts                 OpenComputer project definition
-opencomputer/agents/hello-world/skills/exa-search/
-  SKILL.md                   Agent-specific research workflow guidance
-src/
-  App.tsx                    Exa demo interface
-  use-agent.ts               Streaming OpenComputer client
-  styles.css                 Responsive presentation styles
+  project.ts
+  agents/gtm-engineer/
+    agent.ts
+    tools/exa.ts
+    schedules/
+      hourly-social.ts
+      social-content.ts
+      weekly-blog.ts
+      six-hour-outreach.ts
+      three-day-strategy.ts
+    skills/
+      exa-search/SKILL.md
+      gtm-opportunity-discovery/SKILL.md
+      gtm-content/SKILL.md
+      gtm-outreach/SKILL.md
+      gtm-strategy/SKILL.md
 ```
 
-## Commands
+## Current limits
 
-| Command | Purpose |
-| --- | --- |
-| `npm install` | Install project dependencies |
-| `npm run dev` | Sync the development agent to OpenComputer |
-| `npm run dev:web` | Start the local React application |
-| `npm run build` | Type-check and build the React application |
-| `npm run session` | Open an agent session from the terminal |
-| `npm run deploy` | Create a production deployment |
-| `npm run opencomputer -- <command>` | Run the project-local OpenComputer CLI |
-| `npm run opencomputer -- secrets set EXA_API_KEY` | Set the Exa secret |
-| `npm run opencomputer -- secrets list` | List configured secret names and scopes |
+- No durable GTM memory or cross-session deduplication yet
+- No automated reminder for unresolved selections
+- Exa public-web results only; no native social-network ingestion
+- One seeded campaign
+- No publishing, verified-email, CRM, inbox, or metrics integrations
 
-## Troubleshooting
-
-### “OpenComputer is not running”
-
-Start `npm run dev` first and leave it running before starting `npm run dev:web`.
-
-### Exa returns an authentication error
-
-Set the key again in the environment you are using:
-
-```bash
-# Local development
-npm run opencomputer -- secrets set EXA_API_KEY \
-  --environment development
-
-# Production deployment
-npm run opencomputer -- secrets set EXA_API_KEY \
-  --environment production
-```
-
-### The first development run asks for a project
-
-Choose an existing OpenComputer project or create a new one. The local binding
-is stored under `.opencomputer/`, which is intentionally excluded from Git.
-
-### The browser opens but research requests fail
-
-Check that:
-
-1. `npm run dev` is still running.
-2. `EXA_API_KEY` appears in the development secrets list.
-3. The Exa account has available API usage.
-4. The terminal running the agent shows no connection or deployment errors.
-
-## Security notes
-
-- Do not commit API keys, `.env` files, or `.opencomputer/` state.
-- React never receives the plaintext Exa key.
-- The managed connection permits only HTTPS requests to the declared Exa API
-  origin and methods.
-- Rotate the Exa key immediately if it is pasted into source code, logs, chat,
-  or another public location.
+These are deliberate boundaries for the first vertical slice.

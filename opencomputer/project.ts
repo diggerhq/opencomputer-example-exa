@@ -1,4 +1,4 @@
 export default {
-  name: "secret-logs-test",
-  agents: ["hello-world"],
+  name: "gtm-opportunity-demo",
+  agents: ["gtm-engineer"],
 };
