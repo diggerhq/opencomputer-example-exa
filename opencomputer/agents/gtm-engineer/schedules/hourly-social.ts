@@ -11,6 +11,7 @@ export default defineSchedule({
     payload: {
       workflow: "discover_social_opportunities",
       campaign_id: "agent-harness-demo",
+      providers: ["exa"],
       lookback_hours: 24,
       limit: 10,
       dry_run: true,

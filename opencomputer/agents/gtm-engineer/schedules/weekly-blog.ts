@@ -11,6 +11,7 @@ export default defineSchedule({
     payload: {
       workflow: "research_blog_topics",
       campaign_id: "agent-harness-demo",
+      providers: ["exa"],
       topic_limit: 5,
       dry_run: true,
     },

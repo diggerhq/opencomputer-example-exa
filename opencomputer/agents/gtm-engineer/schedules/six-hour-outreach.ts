@@ -11,6 +11,7 @@ export default defineSchedule({
     payload: {
       workflow: "build_outreach_list",
       campaign_id: "agent-harness-demo",
+      providers: ["exa"],
       candidate_limit: 10,
       dry_run: true,
     },

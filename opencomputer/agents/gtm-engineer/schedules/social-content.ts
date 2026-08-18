@@ -11,6 +11,7 @@ export default defineSchedule({
     payload: {
       workflow: "create_social_content",
       campaign_id: "agent-harness-demo",
+      providers: ["exa"],
       destinations: ["x", "linkedin"],
       concept_limit: 5,
       dry_run: true,
